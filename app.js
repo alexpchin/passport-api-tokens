@@ -5,8 +5,8 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var config = require(__dirname + '/config/config.js');
-
 var app = express();
+
 app.set('port', process.env.PORT || 1337);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -19,10 +19,11 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.configure('development', function() {
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
+
 app.configure('production', function() {
-    app.use(express.errorHandler());
+  app.use(express.errorHandler());
 });
 
 var Account = require(__dirname +'/models/account');
@@ -35,7 +36,9 @@ var Account = require(__dirname +'/models/account');
 passport.use(Account.createStrategy());
 
 mongoose.connect(config.mongo_url);
+
 require(__dirname +'/routes/routes')(app, passport);
+
 app.listen(app.get('port'), function() {
-    console.log(("Express server listening on port " + app.get('port')));
+  console.log(("Express server listening on port " + app.get('port')));
 });
